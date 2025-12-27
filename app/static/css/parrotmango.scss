@@ -1,0 +1,15 @@
+@media only screen and (min-width:768px){
+    .w-lg-25{
+        width:25%!important;
+    }
+    
+}
+@media only screen and (min-width:520px) and (max-width:767px){
+    .w-md-50{
+        width:50%!important;
+    }
+    
+}
+.login-form{
+    min-width: 22rem;
+}
