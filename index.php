@@ -31,19 +31,18 @@
             return $this->get_template('admin/index');
         }
         public function usersCount(){
-            $user = $this->db->query("SELECT COUNT(*) as count FROM `users` ");
-            return $user->fetchAll()[0]->count;
+            $user = $this->db->query(new Users);
+            return $user->count();
         }
     }   
    class UserAdmin extends QController{
         public $db;
         public $model;
         public function __construct(){
-            $this->model = new Users();
         }
         public function users(){
-            $user = $this->db->query("SELECT *  FROM `users` ");
-            return $user->fetchAll();
+            $user = $this->db->query(new Users);
+            return $user->all();
         }
         public function get(){
             return $this->get_template('admin/users');

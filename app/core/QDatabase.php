@@ -28,6 +28,37 @@
             $this->model = $model;
             return $this;
         }
+        public function all(){
+            if ($this->SQLargs == null){
+                $stmt =  $this->session->query($this->SQLstmt);
+            }else{
+                $stmt = $this->session->prepare($this->SQLstmt);
+                foreach($this->SQLargs as $key => $value){
+                    $stmt->bindValue(':'.$key, $value);
+                }
+                $stmt->execute();
+
+            }
+            $this->SQLstmt = null;
+            $model = $this->model;
+            try{
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                if(count($result) == 0){
+                    return null;
+                }
+                $results = [];
+                foreach($result as $i => $obj){
+                    $results[$i] = $model;
+                    foreach($obj as $key =>$value){
+                        $results[$i]->{$key} = $value;
+                    }
+                }
+                return $results;
+            }catch(\Exception $e){
+                return null;
+            }
+            
+        }
         public function first(){
             if ($this->SQLargs == null){
                 $stmt =  $this->session->query($this->SQLstmt." FIRST_VALUE");
@@ -62,4 +93,29 @@
             }
             return $this;
         }
+        public function count(){
+            $sql = "SELECT COUNT(*) as Count from ($this->SQLstmt) AS SUBQUERY";
+            if ($this->SQLargs == null){
+                $stmt =  $this->session->query($sql);
+            }else{
+                $stmt = $this->session->prepare($sql);
+                foreach($this->SQLargs as $key => $value){
+                    $stmt->bindValue(':'.$key, $value);
+                }
+                $stmt->execute();
+
+            }
+            $this->SQLstmt = null;
+            $model = $this->model;
+            try{
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+                return $result[0]->Count;
+            }catch(\Exception $e){
+                return null;
+            }
+            
+        }
+
+        
     }

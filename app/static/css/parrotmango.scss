@@ -12,4 +12,14 @@
 }
 .login-form{
     min-width: 22rem;
+    .form-control{
+        border: none;
+        border-bottom: 2px solid rgb(164, 162, 162);
+        border-radius: 0;
+        background-color: rgb(230, 227, 227);
+        &:focus{
+            border-bottom: 2px solid rgb(84, 50, 254) !important;
+            box-shadow: none;
+        }
+    }
 }
